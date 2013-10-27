@@ -1,5 +1,9 @@
+require "virtus"
+
 require "nmg/version"
 
 module Nmg
-  # Your code goes here...
+  module Types
+    autoload :Process, "nmg/types/process"
+  end
 end
