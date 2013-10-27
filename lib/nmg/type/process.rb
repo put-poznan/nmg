@@ -1,5 +1,5 @@
 module Nmg
-  module Types
+  module Type
     # Define process with all it's attributes
     class Process
       include Virtus.model
