@@ -1,4 +1,5 @@
 # Nuclear Machine Generator
+[![Code Climate][cc-img]][cc]
 
                                ________________
                           ____/ (  (    )   )  \___
@@ -42,6 +43,6 @@ TODO: Write usage instructions here
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/put-poznan/nmg/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
+[cc-img]: https://codeclimate.com/github/put-poznan/nmg.png "CodeClimate badge"
+[cc]: https://codeclimate.com/github/put-poznan/nmg
