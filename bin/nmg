@@ -1,0 +1,105 @@
+#!/usr/bin/env ruby
+
+require 'nmg'
+require 'thor'
+
+class Nmg::CLI < Thor
+  desc 'generate FILE',
+    'Generate file with description of machines, pocesses and maintenance times'
+  option :format,
+    type: :string,
+    default: 'JSON',
+    desc: 'Format of output file'
+  option :machines,
+    type: :numeric,
+    default: 3,
+    aliases: %w(-m),
+    desc: 'Count of generated machines'
+  option :maintenances,
+    type: :numeric,
+    default: 10_000
+  option :tasks,
+    type: :numeric,
+    required: true,
+    aliases: %w(-p),
+    desc: 'Count of generated tasks'
+  option :operations,
+    type: :numeric,
+    aliases: %w(-o --opts),
+    desc: 'Count of operations per process (by default the same as machines count)'
+  option :'maintenance-duration-min',
+    type: :numeric,
+    default: 1,
+    desc: 'Minimum maintenance duration'
+  option :'maintenance-duration-max',
+    type: :numeric,
+    default: 20,
+    desc: 'Maximum maintenance duration'
+  option :'maintenance-step-min',
+    type: :numeric,
+    default: 10,
+    desc: 'Minimum time between two maintenances'
+  option :'maintenance-step-max',
+    type: :numeric,
+    default: 50,
+    desc: 'Maximum time between two maintenances'
+  option :'operation-duration-min',
+    type: :numeric,
+    default: 1,
+    desc: 'Minimum operation duration'
+  option :'operation-duration-max',
+    type: :numeric,
+    default: 20,
+    desc: 'Maximum operation duration'
+  def generate(file)
+    machine_opts = {
+      machines_count: options[:maintenances],
+      maintenances: {
+        from: options[:'maintenance-duration-min'],
+        to: options[:'maintenance-duration-max'],
+        step: {
+          min: options[:'maintenance-step-min'],
+          max: options[:'maintenance-step-max']
+        }
+      }
+    }
+    task_opts = {
+      operations: options[:operations] || options[:machines],
+      min: options[:'operation-duration-min'],
+      max: options[:'operation-duration-max']
+    }
+    hash = {
+      machines: Nmg::Type::Machine.generate(options[:machines], machine_opts),
+      tasks: Nmg::Type::Process.generate(options[:tasks], task_opts)
+    }
+
+    File.open(file, 'w') do |f|
+      f.write Nmg::Sink::Json.new.serialize(hash)
+    end
+  end
+
+  desc 'carbon', 'Show application promotor', hide: true
+  def carbon
+    require 'zlib'
+    require 'base64'
+
+    puts Zlib::Inflate.inflate(Base64.decode64(<<WAT
+eJxtlDFu3EAMRXudgsAULIbgAchGbpMDpJ01ksqAbbgIkNvnkxxpR+v9gBZa
+7NtPip8j1fFdFBcd37YLIpyyoE5kYegguEPrX7f7rTG7+2Q6z5IXxrsb5ECK
+Unpk3GXKAmmtnfUmQ8ai0MAlagW1Wezw6QGEAkovMFLViiFhPZwPCAxfmCHP
+mE4JJUOkKxKMc9uDGXfGq+PTByP45sNJ6EOtNlam3/tJCMPsxVAxlMwJjDIC
+IzyWfkxyfNmK1bi5mfs4awWkgjS0gshcnF1sLP1QNNC7DNgo7qMlbIAsWWBA
+CExQULJYFHXGzcUnO5H4nMmiGezKmkVOunoGEU9mgYyFyTTyuVGr4kibMZ74
+jKqYNni6y/5gnDUc7q4ymWlz7lhsB+aGXTbNhX3GUFQB03A6JiMPDJKKqeWp
+6Z4It/7AoJgEEHGZ5EHre0HLWc4+kJJlJQa+l9N63k2O1OMkIi0GJA/vBM8k
+4OcRPovtUGvbff+GtzqrFkg83cIEpdYavtdbIRFX9T21ZQQcQMh7KRHtYVNM
+309pvjagQLQlsm9yWKRGZgmXKK/zl22/SIenamAHs718fn59/P3zm17/0Y/b
+O/1Sur3diH/evl4/3nn7D/kwU9k=
+WAT
+                                              ))
+  end
+end
+
+Nmg::CLI.start(ARGV)
+
+# vi: ft=ruby

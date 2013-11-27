@@ -27,13 +27,13 @@
 
 ## Installation
 
-Install it yourself as:
+Install it yourself using:
 
     $ gem install nmg
 
 ## Usage
 
-TODO: Write usage instructions here
+See [documentation][doc].
 
 ## Contributing
 
@@ -45,4 +45,5 @@ TODO: Write usage instructions here
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/put-poznan/nmg/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 [cc-img]: https://codeclimate.com/github/put-poznan/nmg.png "CodeClimate badge"
+[doc]: http://rubydoc.info/github/put-poznan/nmg/frames
 [cc]: https://codeclimate.com/github/put-poznan/nmg

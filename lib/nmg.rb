@@ -1,9 +1,15 @@
-require "virtus"
+require 'virtus'
 
-require "nmg/version"
+require 'nmg/version'
+require 'nmg/type/base'
 
 module Nmg
-  module Types
-    autoload :Process, "nmg/types/process"
+  module Sink
+    autoload :Json, 'nmg/sink/json'
+  end
+  module Type
+    autoload :Process,      'nmg/type/process'
+    autoload :Machine,      'nmg/type/machine'
+    autoload :Maintenance,  'nmg/type/maintenance'
   end
 end
