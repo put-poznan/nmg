@@ -26,14 +26,15 @@ class Nmg::CLI < Thor
   option :operations,
     type: :numeric,
     aliases: %w(-o --opts),
-    desc: 'Count of operations per process (by default the same as machines count)'
+    desc: 'Count of operations per process',
+    default: 3
   option :'maintenance-duration-min',
     type: :numeric,
-    default: 1,
+    default: 10,
     desc: 'Minimum maintenance duration'
   option :'maintenance-duration-max',
     type: :numeric,
-    default: 20,
+    default: 50,
     desc: 'Maximum maintenance duration'
   option :'maintenance-step-min',
     type: :numeric,
@@ -45,15 +46,23 @@ class Nmg::CLI < Thor
     desc: 'Maximum time between two maintenances'
   option :'operation-duration-min',
     type: :numeric,
-    default: 1,
+    default: 10,
     desc: 'Minimum operation duration'
   option :'operation-duration-max',
     type: :numeric,
-    default: 20,
+    default: 50,
     desc: 'Maximum operation duration'
+  option :'preparation-min',
+    type: :numeric,
+    default: 5,
+    desc: 'Minimum preparation time'
+  option :'preparation-max',
+    type: :numeric,
+    default: 25,
+    desc: 'Maximum preparation time'
   def generate(file)
     machine_opts = {
-      machines_count: options[:maintenances],
+      maintenences_count: options[:maintenances],
       maintenances: {
         from: options[:'maintenance-duration-min'],
         to: options[:'maintenance-duration-max'],
@@ -66,7 +75,9 @@ class Nmg::CLI < Thor
     task_opts = {
       operations: options[:operations] || options[:machines],
       min: options[:'operation-duration-min'],
-      max: options[:'operation-duration-max']
+      max: options[:'operation-duration-max'],
+      prep_min: options[:'preparation-min'],
+      prep_max: options[:'preparation-max']
     }
     hash = {
       machines: Nmg::Type::Machine.generate(options[:machines], machine_opts),

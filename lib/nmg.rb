@@ -11,5 +11,6 @@ module Nmg
     autoload :Process,      'nmg/type/process'
     autoload :Machine,      'nmg/type/machine'
     autoload :Maintenance,  'nmg/type/maintenance'
+    autoload :Operation,    'nmg/type/operation'
   end
 end
