@@ -62,7 +62,7 @@ class Nmg::CLI < Thor
     desc: 'Maximum preparation time'
   def generate(file)
     machine_opts = {
-      maintenences_count: options[:maintenances],
+      maintenances_count: options[:maintenances],
       maintenances: {
         from: options[:'maintenance-duration-min'],
         to: options[:'maintenance-duration-max'],
